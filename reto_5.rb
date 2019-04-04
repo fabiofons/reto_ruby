@@ -8,7 +8,7 @@ class Questions
         make_questions
     end
 
-    private
+    #private
     def make_questions
         indicator = 0
         File.foreach("questions.txt") do |line|
@@ -22,22 +22,42 @@ class Questions
     end   
 end
 
-puts "Bienvenido a reto 5, Para jugar, solo ingresa el termino correcto para cada una de las definiciones, Listo? Vamos!"      
-game = Questions.new
-puts "Pregunta"
-num_pregunta = 0
-puts game.definitions[num_pregunta]
-while num_pregunta < 5
-    print "Adivinar: "
-    user_answer = gets.chomp.capitalize
-    if user_answer == game.answers[num_pregunta]
-        puts "Correcto!"
-        num_pregunta += 1
-        puts game.definitions[num_pregunta]
-    else
-        puts "Incorrecto!, Trata de nuevo"    
+class Game 
+    attr_reader :question, :guess
+    def initialize(question)
+        @question = question.definitions
+        @guess = question.answers
+        run
+    end
+    
+    def run
+        num_pregunta = 0
+        puts
+        puts "Bienvenido a reto 5, Para jugar, solo ingresa el termino correcto para cada una de las definiciones, Listo? Vamos!"      
+        puts "Pregunta #{num_pregunta+1}: "        
+        puts @question[num_pregunta]
+
+        while num_pregunta < 5
+            print "Adivinar: "
+            user_answer = gets.chomp.capitalize
+            if user_answer == @guess[num_pregunta]
+                puts "Correcto!"
+                num_pregunta += 1
+                 
+                puts @question[num_pregunta]
+            else
+                puts "Incorrecto!, Trata de nuevo"    
+            end
+            if num_pregunta < 5
+                puts "Pregunta #{num_pregunta+1}: "
+            end
+        end
+        puts "Felicitaciones!! Adivinaste todas las preguntas :)"
     end
 end
-puts "Felicitaciones!! Adivinaste todas las preguntas :)"
+
+
+question = Questions.new
+game = Game.new(question)
 
   
